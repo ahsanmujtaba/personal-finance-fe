@@ -1,0 +1,321 @@
+{
+	"info": {
+		"_postman_id": "categories-api-collection",
+		"name": "Personal Budget - Categories API",
+		"description": "Category management endpoints for Personal Budget Management System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Get All Categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/categories?type=expense",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "expense",
+									"description": "Filter by type: expense or income",
+									"disabled": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Expense Categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/categories?type=expense",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "expense",
+									"description": "Filter by expense categories"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Income Categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/categories?type=income",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "income",
+									"description": "Filter by income categories"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Groceries\",\n  \"type\": \"expense\",\n  \"sort_order\": 1,\n  \"is_default\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Category by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/categories/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Food & Groceries\",\n  \"type\": \"expense\",\n  \"sort_order\": 1,\n  \"is_default\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/categories/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/categories/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"1"
+							]
+						}
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Auto-login script for authentication",
+					"const loginUrl = pm.variables.get('base_url') + '/api/login';",
+					"const email = pm.variables.get('test_email') || 'test@example.com';",
+					"const password = pm.variables.get('test_password') || 'password123';",
+					"",
+					"// Skip login for register and login endpoints",
+					"if (pm.request.url.path.includes('register') || pm.request.url.path.includes('login')) {",
+					"    return;",
+					"}",
+					"",
+					"// Check if we already have a valid token",
+					"const currentToken = pm.variables.get('auth_token');",
+					"if (currentToken && currentToken.length > 0) {",
+					"    return;",
+					"}",
+					"",
+					"// Perform login to get token",
+					"pm.sendRequest({",
+					"    url: loginUrl,",
+					"    method: 'POST',",
+					"    header: {",
+					"        'Content-Type': 'application/json',",
+					"        'Accept': 'application/json'",
+					"    },",
+					"    body: {",
+					"        mode: 'raw',",
+					"        raw: JSON.stringify({",
+					"            email: email,",
+					"            password: password",
+					"        })",
+					"    }",
+					"}, function (err, response) {",
+					"    if (err) {",
+					"        console.log('Login failed:', err);",
+					"        return;",
+					"    }",
+					"    ",
+					"    if (response.code === 200) {",
+					"        const responseJson = response.json();",
+					"        if (responseJson.token) {",
+					"            pm.variables.set('auth_token', responseJson.token);",
+					"            console.log('Authentication successful');",
+					"        }",
+					"    } else {",
+					"        console.log('Login failed with status:', response.code);",
+					"    }",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string",
+			"description": "Base URL for the Personal Budget API"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string",
+			"description": "Bearer token for authentication (auto-populated)"
+		},
+		{
+			"key": "test_email",
+			"value": "test@example.com",
+			"type": "string",
+			"description": "Test user email for auto-login"
+		},
+		{
+			"key": "test_password",
+			"value": "password123",
+			"type": "string",
+			"description": "Test user password for auto-login"
+		}
+	]
+}
