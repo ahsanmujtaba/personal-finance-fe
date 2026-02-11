@@ -1,117 +1,127 @@
-# Shadcn Admin Dashboard
+# Personal Budget Frontend (frontend-v2)
 
-Admin Dashboard UI crafted with Shadcn and Vite. Built with responsiveness and accessibility in mind.
+Web frontend for the Personal Budget app. It’s a dashboard-style UI built with React + TypeScript and talks to a backend API (configured via `VITE_API_BASE_URL`).
 
-![alt text](public/images/shadcn-admin.png)
-
-I've been creating dashboard UIs at work and for my personal projects. I always wanted to make a reusable collection of dashboard UI for future projects; and here it is now. While I've created a few custom components, some of the code is directly adapted from ShadcnUI examples.
-
-> This is not a starter project (template) though. I'll probably make one in the future.
+![Dashboard screenshot](public/images/shadcn-admin.png)
 
 ## Features
 
-- Light/dark mode
-- Responsive
-- Accessible
-- With built-in Sidebar component
-- Global search command
-- 10+ pages
-- Extra custom components
-- RTL support
-
-<details>
-<summary>Customized Components (click to expand)</summary>
-
-This project uses Shadcn UI components, but some have been slightly modified for better RTL (Right-to-Left) support and other improvements. These customized components differ from the original Shadcn UI versions.
-
-If you want to update components using the Shadcn CLI (e.g., `npx shadcn@latest add <component>`), it's generally safe for non-customized components. For the listed customized ones, you may need to manually merge changes to preserve the project's modifications and avoid overwriting RTL support or other updates.
-
-> If you don't require RTL support, you can safely update the 'RTL Updated Components' via the Shadcn CLI, as these changes are primarily for RTL compatibility. The 'Modified Components' may have other customizations to consider.
-
-### Modified Components
-
-- scroll-area
-- sonner
-- separator
-
-### RTL Updated Components
-
-- alert-dialog
-- calendar
-- command
-- dialog
-- dropdown-menu
-- select
-- table
-- sheet
-- sidebar
-- switch
-
-**Notes:**
-
-- **Modified Components**: These have general updates, potentially including RTL adjustments.
-- **RTL Updated Components**: These have specific changes for RTL language support (e.g., layout, positioning).
-- For implementation details, check the source files in `src/components/ui/`.
-- All other Shadcn UI components in the project are standard and can be safely updated via the CLI.
-
-</details>
+- Budgeting flows (budgets, budget items, income/expense tables)
+- Category management and category insights
+- Dashboard overview widgets and charts
+- Auth pages (sign-in/sign-up, OTP, forgot password)
+- Light/dark theme, responsive layout, accessible UI primitives
 
 ## Tech Stack
 
-**UI:** [ShadcnUI](https://ui.shadcn.com) (TailwindCSS + RadixUI)
+- React + TypeScript (Vite + SWC)
+- UI: shadcn/ui (Tailwind CSS + Radix UI)
+- Routing: TanStack Router (file-based routes)
+- Data: TanStack React Query + Redux Toolkit (some auth state also in Zustand)
+- HTTP: axios
+- Tooling: ESLint + Prettier + Knip
 
-**Build Tool:** [Vite](https://vitejs.dev/)
+## Getting Started
 
-**Routing:** [TanStack Router](https://tanstack.com/router/latest)
+### Prerequisites
 
-**Type Checking:** [TypeScript](https://www.typescriptlang.org/)
+- Node.js 18+ recommended
+- npm (ships with Node.js) or pnpm
 
-**Linting/Formatting:** [Eslint](https://eslint.org/) & [Prettier](https://prettier.io/)
-
-**Icons:** [Lucide Icons](https://lucide.dev/icons/), [Tabler Icons](https://tabler.io/icons) (Brand icons only)
-
-**Auth (partial):** [Clerk](https://go.clerk.com/GttUAaK)
-
-## Run Locally
-
-Clone the project
+### Install
 
 ```bash
-  git clone https://github.com/satnaing/shadcn-admin.git
+npm ci
 ```
 
-Go to the project directory
+If you prefer pnpm:
 
 ```bash
-  cd shadcn-admin
+pnpm install
 ```
 
-Install dependencies
+### Configure Environment
+
+Copy the example env file and adjust values for your environment:
 
 ```bash
-  pnpm install
+cp .env.example .env.local
 ```
 
-Start the server
+Common variables:
+
+- `VITE_API_BASE_URL` (required): backend base URL (example: `http://127.0.0.1:8000`)
+- `VITE_APP_NAME`: app display name
+- `VITE_APP_VERSION`: app display version string
+
+Optional (only needed for the `/clerk` route group):
+
+- `VITE_CLERK_PUBLISHABLE_KEY`
+
+### Run Dev Server
 
 ```bash
-  pnpm run dev
+npm run dev
 ```
 
-## Sponsoring this project ❤️
+pnpm:
 
-If you find this project helpful or use this in your own work, consider [sponsoring me](https://github.com/sponsors/satnaing) to support development and maintenance. You can [buy me a coffee](https://buymeacoffee.com/satnaing) as well. Don’t worry, every penny helps. Thank you! 🙏
+```bash
+pnpm dev
+```
 
-For questions or sponsorship inquiries, feel free to reach out at [contact@satnaing.dev](mailto:contact@satnaing.dev).
+### Build & Preview
 
-### Current Sponsor
+```bash
+npm run build
+npm run preview
+```
 
-- [Clerk](https://go.clerk.com/GttUAaK) - for backing the implementation of Clerk in this project
+pnpm:
 
-## Author
+```bash
+pnpm build
+pnpm preview
+```
+## Project Structure
 
-Crafted with 🤍 by [@satnaing](https://github.com/satnaing)
+- `src/routes/`: TanStack Router file-based routing (route groups like `(auth)`, `(errors)`, `_authenticated`, and `clerk`)
+- `src/features/`: page/feature modules (budgets, categories, dashboard, settings, etc.)
+- `src/components/`: shared app components
+- `src/components/ui/`: shadcn/ui components (some customized)
+- `src/stores/`: Redux store + slices, plus small Zustand stores
+- `src/lib/`: shared utilities (cookies, error handling, API helpers)
+
+## Development Commands
+
+```bash
+npm run lint
+npm run format
+npm run format:check
+npm run knip
+```
+
+## Deployment
+
+This project is compatible with static hosting (SPA).
+
+- Build output: `dist/`
+- Netlify SPA redirects are configured in `netlify.toml`
+- Typical Netlify settings:
+  - Build command: `pnpm build`
+  - Publish directory: `dist`
+
+## shadcn/ui Customizations
+
+Some shadcn/ui components in `src/components/ui/` are modified (primarily for RTL support and small improvements). If you update components via the shadcn CLI, you may need to manually merge changes for these customized components.
+
+- Modified: `scroll-area`, `sonner`, `separator`
+- RTL-updated: `alert-dialog`, `calendar`, `command`, `dialog`, `dropdown-menu`, `select`, `table`, `sheet`, `sidebar`, `switch`
+
+## Flutter Mobile App
+
+There is a separate Flutter project in `flutter_mobile_app/`. It is not part of the Vite web build.
 
 ## License
 
-Licensed under the [MIT License](https://choosealicense.com/licenses/mit/)
+MIT (see `LICENSE`).
